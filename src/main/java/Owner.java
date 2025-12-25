@@ -18,7 +18,7 @@ public class Owner {
     }
 
     //getters
-    public double getOwnerId() { return ownerId; }
+    public int getOwnerId() { return ownerId; }
     public String getName() {
         return name;
     }
@@ -55,6 +55,10 @@ public class Owner {
     public void setPhone(int phone) {
         if (phone >= 0) {
             this.phone = phone;
+        }
+        else if (phone >= 9999999){
+            System.out.println("Warning: Phone cannot be more than 7 digits. Setting to 0!");
+            this.phone = 0;
         } else {
             System.out.println("Warning: Phone cannot be less than 7 digits. Setting to 0!");
             this.phone = 0;

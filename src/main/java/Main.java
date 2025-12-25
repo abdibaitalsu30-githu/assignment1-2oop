@@ -25,7 +25,7 @@ public class Main {
         Owner owner2 = new Owner(364845, "Alsu", 283746232, 1);
         Owner owner3 = new Owner(223554, "Diana", 354333645, 1);
         Owner owner = new Owner();
-        owner.getPets().add(pet1);
+        owner.getPets().add(pet2);
         owners.add(owner1);
         owners.add(owner2);
         owners.add(owner3);
@@ -91,7 +91,7 @@ public class Main {
 
         System.out.print("Enter petId: ");
         int petId = scanner.nextInt();
-
+        scanner.nextLine();
         System.out.print("Enter name: ");
         String name = scanner.nextLine();
 
@@ -100,6 +100,7 @@ public class Main {
 
         System.out.print("Enter age: ");
         int age = scanner.nextInt();
+        scanner.nextLine();
 
         System.out.println("Enter owner name: ");
         String ownerName = scanner.nextLine();
@@ -114,7 +115,7 @@ public class Main {
         Pet pet = new Pet();
         pets.add(pet);
 
-        System.out.println("\n Pet added successfully!");
+        System.out.println(" Pet added successfully!");
     }
 
     private static void viewAllPets() {
@@ -130,7 +131,8 @@ public class Main {
         for (int i = 0; i < pets.size(); i++) {
             Pet pet = pets.get(i);
             System.out.println((i + 1) + ". " + pet.getPetId() +
-                    " - " + pet.getName() + " - " + pet.getSpecies());
+                    " - " + pet.getName());
+            System.out.println("Species: " + pet.getSpecies());
             System.out.println("Age: " + pet.getAge());
             System.out.println("Owner name: " + pet.getOwnerName());
             System.out.println("Is young: " +
@@ -145,6 +147,7 @@ public class Main {
 
         System.out.print("Enter ownerId: ");
         int ownerId = scanner.nextInt();
+        scanner.nextLine();
 
         System.out.print("Enter name: ");
         String name = scanner.nextLine();
