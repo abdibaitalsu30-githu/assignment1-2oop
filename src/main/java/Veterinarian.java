@@ -1,15 +1,19 @@
+import java.util.ArrayList;
+
 public class Veterinarian {
     private int vetId;
     private String name;
     private String specialization;
     private int experience;
     private Pet pet;
+    private ArrayList<Veterinarian> veterinarians;
 
     public Veterinarian(int vetId, String name, String specialization, int experience) {            //constructor
-        this.vetId = vetId;
-        this.name = name;
+        setVetId(vetId);
+        setName(name);
         this.specialization = specialization;
-        this.experience = experience;
+        setExperience(experience);
+        this.veterinarians = new ArrayList<>();
     }
 
     public Veterinarian() {                                 //default constructor
@@ -19,7 +23,7 @@ public class Veterinarian {
         this.experience = 23;
     }
 
-                                                           //getters
+    //getters
     public int getVetId() {
         return vetId;
     }
@@ -32,19 +36,37 @@ public class Veterinarian {
     public String getExperience() {
         return experience + " years";
     }
+    public ArrayList<Veterinarian> getVeterinarians() {
+        return veterinarians;
+    }
 
-                                                           //setters
+    //setters
     public void setVetId(int vetId) {
-        this.vetId = vetId;
+        if (vetId >= 100000) {
+            this.vetId = vetId;
+        }
+        else {
+            System.out.println("Warning: Id cannot be less than 6 digit! Setting to 0.");
+            this.vetId = 0;
+        }
     }
     public void setName(String name) {
-        this.name = name;
+        if (name != null && !name.trim().isEmpty()) {
+            this.name = name;
+        } else {
+            System.out.println("Warning: Name cannot be empty!");
+        }
     }
     public void setSpecialization(String specialization) {
         this.specialization = specialization;
     }
     public void setExperience(int experience) {
-        this.experience = experience;
+        if (experience >= 0) {
+            this.experience = experience;
+        } else {
+            System.out.println("Warning: Experience cannot be negative. Setting to 0!");
+            this.experience = 0;
+        }
     }
 
                                                          //additional methods
@@ -65,6 +87,12 @@ public class Veterinarian {
 
     public boolean isExperienced() {
         return experience > 6;
+    }
+
+    public void addVeterinarian(Veterinarian veterinarian) {
+        if (veterinarian != null) {
+            veterinarians.add(veterinarian);
+        }
     }
 
     @Override

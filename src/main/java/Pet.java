@@ -1,16 +1,21 @@
+import java.util.ArrayList;
+
 public class Pet {
     private int petId;
     private String name;
     private String species;
     private int age;
     private String ownerName;
+    private ArrayList<Pet> pets;
+
 
     public Pet(int petId, String name, String species, int age, String ownerName) {            //constructor
-        this.petId = petId;
-        this.name = name;
+        setPetId(petId);
+        setName(name);
         this.species = species;
-        this.age = age;
-        this.ownerName = ownerName;
+        setAge(age);
+        setOwnerName(ownerName);
+        this.pets = new ArrayList<>();
     }
 
     public Pet() {                                                                           //default constructor
@@ -19,6 +24,7 @@ public class Pet {
         this.species = "dog";
         this.age = 5;
         this.ownerName = "Tony";
+        this.pets = new ArrayList<>();
     }
 
                                                                                             //getters
@@ -37,28 +43,51 @@ public class Pet {
     public String getOwnerName() {
         return ownerName;
     }
+    public ArrayList<Pet> getPets() {
+        return pets;
+    }
 
                                                                                            //setters
     public void setPetId(int petId) {
-        this.petId = petId;
+        if (petId >= 100000) {
+            this.petId = petId;
+        }
+        else {
+            System.out.println("Warning: Id cannot be less than 6 digit! Setting to 0.");
+            this.petId = 0;
+        }
     }
     public void setName(String name) {
-        this.name = name;
+        if (name != null && !name.trim().isEmpty()) {
+            this.name = name;
+        } else {
+            System.out.println("Warning: Name cannot be empty!");
+        }
     }
     public void setSpecies(String species) {
         this.species = species;
     }
     public void setAge(int age) {
-        this.age = age;
+        if (age >= 0) {
+            this.age = age;
+        } else {
+            System.out.println("Warning: Age cannot be negative. Setting to 0!");
+            this.age = 0;
+        }
     }
     public void setOwnerName(String ownerName) {
-        this.ownerName = ownerName;
+        if (ownerName != null && !name.trim().isEmpty()) {
+            this.ownerName = ownerName;
+        } else {
+            System.out.println("Warning: Pet cannot be without owner!");
+        }
     }
 
                                                                                           //additional methods
     public boolean isYoung() {
         return age < 3;
     }
+
     public String getLifeStage() {
         if(age < 3) {
             return "Young";
@@ -69,7 +98,11 @@ public class Pet {
         }
     }
 
-
+    public void addPet(Pet pet) {
+        if (pet != null) {
+            pets.add(pet);
+        }
+    }
 
     @Override
     public String toString() {
