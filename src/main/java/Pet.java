@@ -76,7 +76,7 @@ public class Pet {
         }
     }
     public void setOwnerName(String ownerName) {
-        if (ownerName != null && !name.trim().isEmpty()) {
+        if (ownerName != null && !ownerName.trim().isEmpty()) {
             this.ownerName = ownerName;
         } else {
             System.out.println("Warning: Pet cannot be without owner!");

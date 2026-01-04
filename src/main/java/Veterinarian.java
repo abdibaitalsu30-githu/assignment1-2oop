@@ -73,7 +73,7 @@ public class Veterinarian {
     public boolean canTreat() {
         if (pet == null || specialization == null || pet.getSpecies() == null) return false;
         String species = pet.getSpecies().trim().toLowerCase();
-        if (specialization.equals("Dermatology")) {
+        if (specialization.equals("Surgeon")) {
             return species.equals("cat") || species.equals("dog");
         }
         if (specialization.equals("Exotology")) {
