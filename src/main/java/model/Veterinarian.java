@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+package model;
 
 public class Veterinarian {
     private int vetId;
@@ -6,14 +6,12 @@ public class Veterinarian {
     private String specialization;
     private int experience;
     private Pet pet;
-    private ArrayList<Veterinarian> veterinarians;
 
     public Veterinarian(int vetId, String name, String specialization, int experience) {            //constructor
         setVetId(vetId);
         setName(name);
-        this.specialization = specialization;
+        setSpecialization(specialization);
         setExperience(experience);
-        this.veterinarians = new ArrayList<>();
     }
 
     public Veterinarian() {                                 //default constructor
@@ -36,37 +34,33 @@ public class Veterinarian {
     public String getExperience() {
         return experience + " years";
     }
-    public ArrayList<Veterinarian> getVeterinarians() {
-        return veterinarians;
-    }
 
-    //setters
     public void setVetId(int vetId) {
-        if (vetId >= 100000) {
-            this.vetId = vetId;
+        if (vetId < 100000 || vetId > 999999) {
+            throw new IllegalArgumentException("VetId must be 6 digits");
         }
-        else {
-            System.out.println("Warning: Id cannot be less than 6 digit! Setting to 0.");
-            this.vetId = 0;
-        }
+        this.vetId = vetId;
     }
     public void setName(String name) {
-        if (name != null && !name.trim().isEmpty()) {
-            this.name = name;
-        } else {
-            System.out.println("Warning: Name cannot be empty!");
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("Veterinarian name cannot be empty");
         }
+        if (name.length() < 2) {
+            throw new IllegalArgumentException("Veterinarian name must be at least 2 characters");
+        }
+        this.name = name;
     }
     public void setSpecialization(String specialization) {
+        if (specialization == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("Veterinarian specialization cannot be empty");
+        }
         this.specialization = specialization;
     }
     public void setExperience(int experience) {
-        if (experience >= 0) {
-            this.experience = experience;
-        } else {
-            System.out.println("Warning: Experience cannot be negative. Setting to 0!");
-            this.experience = 0;
+        if (experience <= 0) {
+            throw new IllegalArgumentException("Veterinarian experience must be positive");
         }
+        this.experience = experience;
     }
 
                                                          //additional methods
@@ -89,15 +83,16 @@ public class Veterinarian {
         return experience > 6;
     }
 
-    public void addVeterinarian(Veterinarian veterinarian) {
-        if (veterinarian != null) {
-            veterinarians.add(veterinarian);
-        }
+    public void displayInfo() {
+        System.out.println("Vet ID: " + vetId);
+        System.out.println("Vet name: " + name);
+        System.out.println("Vet specialization: " + specialization);
+        System.out.println("Vet experience: " + experience);
     }
 
     @Override
     public String toString() {
-        return "Veterinarian{Id=" + vetId + ", name= '" + name +
+        return "model.Veterinarian{Id=" + vetId + ", name= '" + name +
                 "', specialization=" + specialization +  ", experience=" + getExperience() + "}";
     }
 
