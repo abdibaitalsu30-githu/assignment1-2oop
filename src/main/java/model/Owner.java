@@ -7,14 +7,12 @@ public class Owner {
     private String name;
     private int phone;
     private int numberOfPets;
-    private ArrayList<Pet> pets;
 
     public Owner(int ownerId, String name, int phone, int numberOfPets) {                         //constructor
         setOwnerId(ownerId);
         setName(name);
         setPhone(phone);
         setNumberOfPets(numberOfPets);
-        this.pets = new ArrayList<>();
     }
 
     //getters
@@ -27,9 +25,6 @@ public class Owner {
     }
     public int getNumberOfPets() {
         return numberOfPets;
-    }
-    public ArrayList<Pet> getPets() {
-        return pets;
     }
 
     //setters
@@ -59,9 +54,6 @@ public class Owner {
             throw new IllegalArgumentException("Owner number of pets must be positive");
         }
         this.numberOfPets = numberOfPets;
-    }
-    public void setPets(ArrayList<Pet> pets) {
-        this.pets = pets;
     }
 
     public boolean isFrequentClient() {
