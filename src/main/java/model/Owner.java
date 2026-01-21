@@ -69,7 +69,7 @@ public class Owner {
 
     @Override
     public String toString() {
-        return "model.Owner{Id=" + ownerId + ", name= '" + name +
+        return "Owner{Id=" + ownerId + ", name= '" + name +
                 "', phone=" + getPhone() +  ", number of pets=" + numberOfPets + "}";
     }
 

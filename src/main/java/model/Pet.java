@@ -119,7 +119,7 @@ public class Pet implements Healable {
 
     @Override
     public String toString() {
-        return "model.Pet{Id=" + petId + ", name= '" + name +
-                "', species=" + species + ", Age=" + getAge() + ", model.Owner name=" + ownerName + "}";
+        return "Pet{Id=" + petId + ", name= '" + name +
+                "', species=" + species + ", Age=" + getAge() + ", Owner name=" + ownerName + "}";
     }
 }

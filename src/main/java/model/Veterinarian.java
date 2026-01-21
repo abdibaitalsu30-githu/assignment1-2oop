@@ -76,7 +76,7 @@ public class Veterinarian {
 
     @Override
     public String toString() {
-        return "model.Veterinarian{Id=" + vetId + ", name= '" + name +
+        return "Veterinarian{Id=" + vetId + ", name= '" + name +
                 "', specialization=" + specialization +  ", experience=" + getExperience() + "}";
     }
 
