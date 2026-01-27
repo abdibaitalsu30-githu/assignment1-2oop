@@ -37,7 +37,7 @@ public class Vaccination extends Treatment {
     }
     @Override
     public void Price() {
-        System.out.println("Total price is " + getPrice() + " for this " + vaccineName + " vaccine.");
+        System.out.println("Total price is $" + price + " for this " + vaccineName + " vaccine.");
     }
 
     @Override

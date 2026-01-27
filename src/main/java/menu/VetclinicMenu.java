@@ -4,6 +4,7 @@ import model.*;
 import exception.InvalidInputException;
 import java.util.ArrayList;
 import java.util.Scanner;
+
 public class VetclinicMenu implements Menu {
     private ArrayList<Treatment> allTreatment;
     private ArrayList<Pet> pets;

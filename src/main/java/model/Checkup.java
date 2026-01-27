@@ -20,7 +20,7 @@ public class Checkup extends Treatment {
 
     @Override
     public void Price() {
-        System.out.println("Total price is " + getPrice() + " for this checkup.");
+        System.out.println("Total price is $" + price + " for this checkup.");
     }
     @Override
     public String getAppointment() {

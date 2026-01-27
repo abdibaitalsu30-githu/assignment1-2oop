@@ -19,7 +19,7 @@ public abstract class Treatment {
     public int getTreatmentId() {
         return treatmentId;
     }
-    public int getPetID() {
+    public int getPetid() {
         return petid;
     }
     public String getDate() {
@@ -28,8 +28,8 @@ public abstract class Treatment {
     public String getStatus() {
         return status;
     }
-    public String getPrice() {
-        return "$" + price;
+    public double getPrice() {
+        return price;
     }
 
     public void setTreatmentId(int treatmentId) {
@@ -74,11 +74,11 @@ public abstract class Treatment {
     }
 
     public void displayInfo() {
-        System.out.println("model.Treatment ID: " + treatmentId);
+        System.out.println("Treatment ID: " + treatmentId);
         System.out.println("PetID: " + petid);
         System.out.println("Date: " + date);
         System.out.println("Status: " + status);
-        System.out.println("Price: " + getPrice());
+        System.out.println("Price: $" + price);
     }
 
     public boolean isExpensive() {
@@ -91,6 +91,6 @@ public abstract class Treatment {
     @Override
     public String toString() {
         return "[" + getAppointment() + "]" + " (treatmentId: " + treatmentId + ", petID: " + petid + ", date: '" + date +
-                "', status: '" + status +  "', price: " + getPrice() + ")";
+                "', status: '" + status +  "', price:$ " + price + ")";
     }
 }
