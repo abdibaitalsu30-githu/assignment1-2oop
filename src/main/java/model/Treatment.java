@@ -2,15 +2,15 @@ package model;
 
 public abstract class Treatment {
     protected int treatmentId;
-    protected int petid;
+    protected String patientName;
     protected String date;
     protected String status;
     protected double price;
 
 
-    public Treatment(int treatmentId, int petid, String date, String status, double price) {
+    public Treatment(int treatmentId, String patientName, String date, String status, double price) {
         setTreatmentId(treatmentId);
-        setPetid(petid);
+        setPatientName(patientName);
         setDate(date);
         setStatus(status);
         setPrice(price);
@@ -19,8 +19,8 @@ public abstract class Treatment {
     public int getTreatmentId() {
         return treatmentId;
     }
-    public int getPetid() {
-        return petid;
+    public String getPatientName() {
+        return patientName;
     }
     public String getDate() {
         return date;
@@ -33,16 +33,19 @@ public abstract class Treatment {
     }
 
     public void setTreatmentId(int treatmentId) {
-        if (treatmentId < 100000 || treatmentId > 999999) {
-            throw new IllegalArgumentException("TreatmentID must be 6 digits");
+        if (treatmentId < 0) {
+            throw new IllegalArgumentException("TreatmentID must be positive");
         }
         this.treatmentId = treatmentId;
     }
-    public void setPetid(int petid) {
-        if (petid < 100000 || petid > 999999) {
-            throw new IllegalArgumentException("PetID must be 6 digits");
+    public void setPatientName(String patientName) {
+        if (patientName == null || patientName.trim().isEmpty()) {
+            throw new IllegalArgumentException("Pet name cannot be empty");
         }
-        this.petid = petid;
+        if (patientName.length() < 2) {
+            throw new IllegalArgumentException("Pet name must be at least 2 characters");
+        }
+        this.patientName = patientName;
     }
     public void setDate(String date) {
         if (date == null || date.trim().isEmpty()){
@@ -75,7 +78,7 @@ public abstract class Treatment {
 
     public void displayInfo() {
         System.out.println("Treatment ID: " + treatmentId);
-        System.out.println("PetID: " + petid);
+        System.out.println("Patient name: " + patientName);
         System.out.println("Date: " + date);
         System.out.println("Status: " + status);
         System.out.println("Price: $" + price);
@@ -90,7 +93,7 @@ public abstract class Treatment {
 
     @Override
     public String toString() {
-        return "[" + getAppointment() + "]" + " (treatmentId: " + treatmentId + ", petID: " + petid + ", date: '" + date +
+        return "[" + getAppointment() + "]" + " (treatmentId: " + treatmentId + ", Patient name: " + patientName + ", date: '" + date +
                 "', status: '" + status +  "', price:$ " + price + ")";
     }
 }

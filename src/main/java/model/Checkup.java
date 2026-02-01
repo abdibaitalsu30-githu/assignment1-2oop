@@ -3,8 +3,8 @@ package model;
 public class Checkup extends Treatment {
     private int conditionScore;
 
-    public Checkup(int treatmentId, int petid, String date, String status, double price, int conditionScore) {
-        super(treatmentId, petid, date, status, price);
+    public Checkup(int treatmentId, String patientName, String date, String status, double price, int conditionScore) {
+        super(treatmentId, patientName, date, status, price);
         setConditionScore(conditionScore);
     }
 
@@ -28,7 +28,7 @@ public class Checkup extends Treatment {
     }
 
     public void Condition(int conditionScore) {
-        System.out.println("After checkup " + petid + " is on " + conditionScore + " condition");
+        System.out.println("After checkup " + patientName + " is on " + conditionScore + " condition");
     }
     public boolean isSick() {
         return conditionScore < 4;
@@ -40,7 +40,7 @@ public class Checkup extends Treatment {
         System.out.println("Appointment: Checkup");
         System.out.println("Condition score: " + conditionScore);
         if (isSick()) {
-            System.out.println("Pet is sick.");
+            System.out.println(getPatientName() + " is sick!");
         }
 
     }

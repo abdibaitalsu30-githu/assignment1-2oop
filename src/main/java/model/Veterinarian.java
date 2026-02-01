@@ -66,6 +66,20 @@ public class Veterinarian {
     public boolean isExperienced() {
         return experience > 6;
     }
+    public boolean canTreat() {
+        if (pet == null || specialization == null || pet.getSpecies() == null) return false;
+        String species = pet.getSpecies().trim().toLowerCase();
+        if (specialization.equals("Surgeon")) {
+            return species.equals("cat") || species.equals("dog");
+        }
+        if (specialization.equals("Exotology")) {
+            return species.equals("hedgehog");
+        }
+        if (specialization.equals("Ichthyologist")) {
+            return species.equals("golden fish");
+        }
+        return false;
+    }
 
     public void displayInfo() {
         System.out.println("Vet ID: " + vetId);

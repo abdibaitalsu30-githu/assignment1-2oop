@@ -2,28 +2,35 @@ package menu;
 
 import model.*;
 import exception.InvalidInputException;
+import database.*;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class VetclinicMenu implements Menu {
-    private ArrayList<Treatment> allTreatment;
     private ArrayList<Pet> pets;
     private ArrayList<Owner> owners;
     private ArrayList<Veterinarian> veterinarians;
     private Scanner scanner;
+    private TreatmentDAO treatmentDAO;
 
     public VetclinicMenu() {
-        this.allTreatment = new ArrayList<>();
         this.pets = new ArrayList<>();
         this.owners = new ArrayList<>();
         this.veterinarians = new ArrayList<>();
         this.scanner = new Scanner(System.in);
+        this.treatmentDAO = new TreatmentDAO();
+
+        System.out.println("\n╔════════════════════════════════════════╗");
+        System.out.println("║  RESTAURANT MANAGEMENT SYSTEM v2.0     ║");
+        System.out.println("║  Week 8: Fully Database-Driven         ║");
+        System.out.println("╚════════════════════════════════════════╝");
+        System.out.println("✅ All data is stored in PostgreSQL");
+        System.out.println("✅ No in-memory ArrayLists for treatment");
+        System.out.println("✅ Complete CRUD operations");
 
         try {
-            allTreatment.add(new Vaccination(484854, 385678, "01.12.25", "Completed", 234.4, "Rabies", 4.2));
-            allTreatment.add(new Checkup(897656, 285342, "02.11.25", "Completed", 50.6, 7));
-
-            pets.add(new Pet(244554, "Jane", "dog", 6, "Mark"));
+            pets.add(new Pet(244554, "Jaja", "dog", 6, "Mark"));
             pets.add(new Pet(385678, "Minny", "cat", 12, "Mark"));
             pets.add(new Pet(253574, "Ozhik", "hedgehog", 2, "Alsu"));
             pets.add(new Pet(285342, "Wink", "golden fish", 3, "Diana"));
@@ -43,22 +50,31 @@ public class VetclinicMenu implements Menu {
 
         @Override
         public void displayMenu() {
-            System.out.println("\n========================================");
-            System.out.println("    VETCLINIC MANAGEMENT SYSTEM");
-            System.out.println("========================================");
-            System.out.println("1. Add Vaccination");
-            System.out.println("2. Add Checkup");
-            System.out.println("3. View all treatment");
-            System.out.println("4. View Vaccination only");
-            System.out.println("5. View Checkup only");
-            System.out.println("6. Give all treatment price");
-            System.out.println("7. Add pet");
-            System.out.println("8. View all pets");
-            System.out.println("9. Add owner");
-            System.out.println("10. View all owners");
-            System.out.println("11. Heal pet");
-            System.out.println("0. Exit");
-            System.out.println("========================================");
+            System.out.println("\n╔════════════════════════════════════════╗");
+            System.out.println("║         MAIN MENU - Week 8             ║");
+            System.out.println("╚════════════════════════════════════════╝");
+            System.out.println("┌─ STAFF MANAGEMENT ─────────────────────┐");
+            System.out.println("│ 1. Add Vaccination                     │");
+            System.out.println("│ 2. Add Checkup                         │");
+            System.out.println("│ 3. View All Treatment                  │");
+            System.out.println("│ 4. View Vaccinations Only              │");
+            System.out.println("│ 5. View Checkups Only                  │");
+            System.out.println("│ 6. Update Treatment                    │");
+            System.out.println("│ 7. Delete Treatment                    │");
+            System.out.println("├─ SEARCH & FILTER ──────────────────────┤");
+            System.out.println("│ 8. Search by Patient Name              │");
+            System.out.println("│ 9. Search by Price Range               │");
+            System.out.println("│10. High-Costed Treatment (Price >= X)  │");
+            System.out.println("├─ DEMO & OTHER ─────────────────────────┤");
+            System.out.println("│11. Polymorphism Demo                   │");
+            System.out.println("│12. Add Pet                             │");
+            System.out.println("│13. View all pets                       │");
+            System.out.println("│14. Add Owner                           │");
+            System.out.println("│15. View all owners                     │");
+            System.out.println("│16. View all veterinarians              │");
+            System.out.println("│17. Heal pet                            │");
+            System.out.println("│ 0. Exit                                │");
+            System.out.println("└────────────────────────────────────────┘");
         }
 
         @Override
@@ -89,37 +105,64 @@ public class VetclinicMenu implements Menu {
                             viewCheckups();
                             break;
                         case 6:
-                            demonstratePolymorphism();
+                            updateTreatment();
                             break;
                         case 7:
-                            addPet();
+                            deleteTreatment();
                             break;
                         case 8:
-                            viewAllPets();
+                            searchByPatientName();
                             break;
                         case 9:
-                            addOwner();
+                            searchByPriceRange();
                             break;
                         case 10:
-                            viewAllOwners();
+                            searchHighCostedTreatment();
                             break;
                         case 11:
+                            demonstratePolymorphism();
+                            break;
+                        case 12:
+                            addPet();
+                            break;
+                        case 13:
+                            viewAllPets();
+                            break;
+                        case 14:
+                            addOwner();
+                            break;
+                        case 15:
+                            viewAllOwners();
+                            break;
+                        case 16:
+                            viewAllVeterinarians();
+                            break;
+                        case 17:
                             healPet();
                             break;
                         case 0:
                             running = false;
-                            System.out.println("\nThank you for using Vetclinic Management System!");
-                            System.out.println("Goodbye! ");
+                            System.out.println("\n╔════════════════════════════════════════╗");
+                            System.out.println("║  Thank you for using our system!      ║");
+                            System.out.println("║  Goodbye! 👋                          ║");
+                            System.out.println("╚════════════════════════════════════════╝");
                             break;
                         default:
-                            System.out.println("\n Invalid choice! Please select 0-11.");
+                            System.out.println("❌ Invalid choice! Please select 0-17.");
                     }
+
+                    if (choice != 0) {
+                        pressEnterToContinue();
+                    }
+
                 } catch (java.util.InputMismatchException e) {
                     System.out.println("Error: Please enter a valid number!");
                     scanner.nextLine();
+                    pressEnterToContinue();
                 } catch (Exception e) {
                     System.out.println("Error: " + e.getMessage());
                     scanner.nextLine();
+                    pressEnterToContinue();
                 }
             }
             scanner.close();
@@ -127,36 +170,36 @@ public class VetclinicMenu implements Menu {
 
     private void addVaccination() {
         try {
-            System.out.println("\n--- ADD VACCINATION ---");
+            System.out.println("\n┌─ ADD VACCINATION ──────────────────────┐");
 
-            System.out.print("Enter treatmentId: ");
+            System.out.print("| Enter Vaccination ID: ");
             int treatmentId = scanner.nextInt();
             scanner.nextLine();
 
-            System.out.print("Enter petID: ");
-            int petid = scanner.nextInt();
-            scanner.nextLine();
+            System.out.print("| Enter patient name: ");
+            String patientName = scanner.nextLine();
 
-            System.out.print("Enter date: ");
+            System.out.print("| Enter date: ");
             String date = scanner.nextLine();
 
-            System.out.print("Enter status: ");
+            System.out.print("| Enter status: ");
             String status = scanner.nextLine();
 
-            System.out.print("Enter price: ");
+            System.out.print("| Enter price (KZT): ");
             double price = scanner.nextDouble();
             scanner.nextLine();
 
-            System.out.print("Enter vaccine name: ");
+            System.out.print("| Enter vaccine name: ");
             String vaccineName = scanner.nextLine();
 
-            System.out.print("Enter dose: ");
+            System.out.print("| Enter dose (ml): ");
             double doseMl = scanner.nextDouble();
             scanner.nextLine();
 
-            Vaccination vaccination = new Vaccination(treatmentId, petid, date, status, price, vaccineName, doseMl);
-            allTreatment.add(vaccination);
-            System.out.println("Vaccination added successfully!");
+            System.out.println("└────────────────────────────────────────┘");
+
+            Vaccination vaccination = new Vaccination(treatmentId, patientName, date, status, price, vaccineName, doseMl);
+            treatmentDAO.insertVaccination(vaccination);
 
         } catch (java.util.InputMismatchException e) {
             System.out.println("Error: Invalid Input type!");
@@ -168,33 +211,33 @@ public class VetclinicMenu implements Menu {
 
     private void addCheckup() {
         try {
-        System.out.println("\n--- ADD CHECKUP ---");
+            System.out.println("\n┌─ ADD CHECKUP ──────────────────────────┐");
 
-        System.out.print("Enter treatmentId: ");
-        int treatmentId = scanner.nextInt();
-        scanner.nextLine();
+            System.out.print("| Enter Checkup ID: ");
+            int treatmentId = scanner.nextInt();
+            scanner.nextLine();
 
-        System.out.print("Enter petID: ");
-        int petid = scanner.nextInt();
-        scanner.nextLine();
+            System.out.print("| Enter patient name: ");
+            String patientName = scanner.nextLine();
 
-        System.out.print("Enter date: ");
-        String date = scanner.nextLine();
+            System.out.print("| Enter date: ");
+            String date = scanner.nextLine();
 
-        System.out.print("Enter status: ");
-        String status = scanner.nextLine();
+            System.out.print("| Enter status: ");
+            String status = scanner.nextLine();
 
-        System.out.print("Enter price: ");
-        double price = scanner.nextDouble();
-        scanner.nextLine();
+            System.out.print("| Enter price (KZT): ");
+            double price = scanner.nextDouble();
+            scanner.nextLine();
 
-        System.out.print("Enter condition score: ");
-        int conditionScore = scanner.nextInt();
-        scanner.nextLine();
+            System.out.print("| Enter condition score (1-9): ");
+            int conditionScore = scanner.nextInt();
+            scanner.nextLine();
 
-        Checkup checkup = new Checkup(treatmentId, petid, date, status, price, conditionScore);
-        allTreatment.add(checkup);
-        System.out.println("Checkup added successfully!");
+            System.out.println("└────────────────────────────────────────┘");
+
+            Checkup checkup = new Checkup(treatmentId, patientName, date, status, price, conditionScore);
+            treatmentDAO.insertCheckup(checkup);
 
     } catch (java.util.InputMismatchException e) {
             System.out.println("Error: Invalid Input type!");
@@ -204,130 +247,275 @@ public class VetclinicMenu implements Menu {
     }
 
     private void viewAllTreatment() {
-        System.out.println("\n========================================");
-        System.out.println("           ALL TREATMENT");
-        System.out.println("========================================");
-        if (allTreatment.isEmpty()) {
-            System.out.println("No treatment found.");
-            return;
-        }
-
-        for (int i = 0; i < allTreatment.size(); i++) {
-            Treatment t = allTreatment.get(i);
-            System.out.println((i + 1) + ". ");
-            if (t instanceof Vaccination) {
-                System.out.print("[VACCINATION]");
-                Vaccination vaccination = (Vaccination) t; // Downcast
-                if (vaccination.isForBigAnimal()) {
-                    System.out.println(" for big animal!");
-                }
-            } else if (t instanceof Checkup) {
-                System.out.print("[CHECKUP]");
-                Checkup checkup = (Checkup) t; // Downcast
-                if (checkup.isSick()) {
-                    System.out.println(" is sick!");
-                }
-            } else {
-                System.out.print("[TREATMENT]");
-            }
-
-            System.out.println(t.toString());
-        }
+        treatmentDAO.displayAllTreatment();
     }
 
     private void viewVaccinations() {
-        System.out.println("\n========================================");
-        System.out.println("          VACCINATIONS ONLY");
-        System.out.println("========================================");
-        boolean foundVaccination = false;
-        for (Treatment t : allTreatment) {
-            if (t instanceof Vaccination) {
-                Vaccination vaccination = (Vaccination) t;
-                System.out.println(vaccination.toString());
-                System.out.println(" Vaccine name: " + vaccination.getVaccineName());
-                System.out.println(" Dose: " + vaccination.getDoseMl());
+        List<Vaccination> vaccinations = treatmentDAO.getAllVaccinations();
+
+        System.out.println("\n╔════════════════════════════════════════╗");
+        System.out.println("║          VACCINATIONS ONLY             ║");
+        System.out.println("╚════════════════════════════════════════╝");
+
+        if(vaccinations.isEmpty()) {
+            System.out.println(" No vaccinations in database.");
+        } else {
+            for (int i = 0; i < vaccinations.size(); i++) {
+                Vaccination vaccination = vaccinations.get(i);
+                System.out.println((i+1) + ". " + vaccination.toString());
+                System.out.println("   Vaccine name: " + vaccination.getVaccineName());
+                System.out.println("   Dose: " + vaccination.getDoseMl() + "ml");
                 if (vaccination.isForBigAnimal()) {
-                    System.out.println(" for big animal!");
+                    System.out.println(vaccination.getPatientName() + " is a big one ;)");
                 }
                 System.out.println();
-                foundVaccination = true;
             }
-        }
-        if (!foundVaccination) {
-            System.out.println("No vaccinations found.");
-
+            System.out.println("Total vaccinations: " + vaccinations.size());
         }
     }
 
     private void viewCheckups() {
-        System.out.println("\n========================================");
-        System.out.println(" CHECKUPS ONLY");
-        System.out.println("========================================");
-        boolean foundCheckup = false;
-        for (Treatment t : allTreatment) {
-            if (t instanceof Checkup) {
-                Checkup checkup = (Checkup) t;
-                System.out.println(checkup.toString());
-                System.out.println(" Condition score: " + checkup.getConditionScore());
+        List<Checkup> checkups = treatmentDAO.getAllCheckups();
+
+        System.out.println("\n╔════════════════════════════════════════╗");
+        System.out.println("║          CHECKUPS ONLY                 ║");
+        System.out.println("╚════════════════════════════════════════╝");
+
+        if(checkups.isEmpty()) {
+            System.out.println("No checkups in database.");
+        } else {
+            for (int i = 0; i < checkups.size(); i++) {
+                Checkup checkup = checkups.get(i);
+                System.out.println((i+1) + ". " + checkup.toString());
+                System.out.println("  Condition score: " + checkup.getConditionScore());
                 if (checkup.isSick()) {
-                    System.out.println(" is sick!");
+                    System.out.println(checkup.getPatientName() + " is sick :(. ");
                 }
                 System.out.println();
-                foundCheckup = true;
             }
+            System.out.println("Total checkups: " + checkups.size());
         }
-        if (!foundCheckup) {
-            System.out.println("No checkups found.");
+    }
 
+    private void updateTreatment() {
+        System.out.println("\\n┌─ UPDATE TREATMENT ─────────────────────┐");
+        System.out.println("| Enter Treatment ID to update: ");
+
+        try {
+            int treatmentId = scanner.nextInt();
+            scanner.nextLine();
+
+            Treatment existingTreatment = treatmentDAO.getTreatmentById(treatmentId);
+
+            if(existingTreatment == null) {
+                System.out.println("No treatment found with ID: " + treatmentId);
+                return;
+            }
+
+            System.out.println("| Current Info:");
+            System.out.println("| " + existingTreatment.toString());
+            System.out.println("└────────────────────────────────────────┘");
+
+            System.out.println("\\n┌─ ENTER NEW VALUES ─────────────────────┐");
+            System.out.println("│ (Press Enter to keep current value)   │");
+
+            System.out.print("│ New Name [" + existingTreatment.getPatientName() + "]: ");
+            String newPatientName = scanner.nextLine();
+            if (newPatientName.trim().isEmpty()) {
+                newPatientName = existingTreatment.getPatientName();
+            }
+            System.out.print("| New Date [" + existingTreatment.getDate() + "]: ");
+            String newDate = scanner.nextLine();
+            if (newDate.trim().isEmpty()) {
+                newDate = existingTreatment.getDate();
+            }
+            System.out.print("| New Status [" + existingTreatment.getStatus() + "]: ");
+            String newStatus = scanner.nextLine();
+            if (newStatus.trim().isEmpty()) {
+                newStatus = existingTreatment.getStatus();
+            }
+            System.out.print("| New Price [" + existingTreatment.getPrice() + "]: ");
+            String priceInput = scanner.nextLine();
+            double newPrice = priceInput.trim().isEmpty() ?
+                existingTreatment.getPrice() : Double.parseDouble(priceInput);
+
+            if (existingTreatment instanceof Vaccination) {
+                Vaccination vaccination = (Vaccination) existingTreatment;
+                System.out.print("| New Vaccine Name: [" + vaccination.getVaccineName() + "]: ");
+                String newVaccineName = scanner.nextLine();
+                if(newVaccineName.trim().isEmpty()) {
+                    newVaccineName = vaccination.getVaccineName();
+                }
+                System.out.print("| New dose(ml): [" + vaccination.getDoseMl() + "]: ");
+                String doseInput = scanner.nextLine();
+                double newDose = doseInput.trim().isEmpty() ?
+                        vaccination.getDoseMl() : Double.parseDouble(doseInput);
+                Vaccination updatedVaccination = new Vaccination(treatmentId, newPatientName, newDate, newStatus, newPrice, newVaccineName, newDose);
+                treatmentDAO.updateVaccination(updatedVaccination);
+            }
+
+            else if(existingTreatment instanceof Checkup) {
+                Checkup checkup = (Checkup) existingTreatment;
+                System.out.print("| New Condition Score: [" + checkup.getConditionScore() + "]: ");
+                String conditionScoreInput = scanner.nextLine();
+                int newConditionScore = conditionScoreInput.trim().isEmpty() ?
+                        checkup.getConditionScore() : Integer.parseInt(conditionScoreInput);
+                Checkup updatedCheckup = new Checkup(treatmentId, newPatientName, newDate, newStatus, newPrice, newConditionScore);
+                treatmentDAO.updateCheckup(updatedCheckup);
+            }
+            System.out.println("└────────────────────────────────────────┘");
+
+
+        } catch (java.util.InputMismatchException e) {
+            System.out.println("Error: Invalid input type!");
+            scanner.nextLine();
+        } catch (IllegalArgumentException e) {
+            System.out.println("Validaion Error: " + e.getMessage());
+        }
+    }
+
+    private void deleteTreatment() {
+        System.out.println("\n┌─ DELETE TREATMENT ─────────────────────┐");
+        System.out.print("│ Enter Treatment ID to delete: ");
+
+        try {
+            int treatmentId = scanner.nextInt();
+            scanner.nextLine();
+
+            Treatment treatment = treatmentDAO.getTreatmentById(treatmentId);
+
+            if (treatment == null) {
+                System.out.println("No treatment found with ID: " + treatmentId);
+                return;
+            }
+
+            System.out.println("| Treatment to delete: ");
+            System.out.println("|" + treatment.toString());
+            System.out.println("└────────────────────────────────────────┘");
+
+            System.out.print(" Are you sure?? (yes/no): ");
+            String confirmation = scanner.nextLine();
+
+            if(confirmation.equalsIgnoreCase("yes")) {
+                treatmentDAO.deleteTreatment(treatmentId);
+            } else {
+                System.out.println("Deletion cancelled!");
+            }
+        } catch (java.util.InputMismatchException e) {
+            System.out.println("Error: Invalid input!");
+            scanner.nextLine();
+        }
+    }
+
+    private void searchByPatientName() {
+         try {
+             System.out.println("\n┌─ SEARCH BY PATIENT NAME ───────────────┐");
+             System.out.print("│ Enter patient name to search: ");
+             String patientName = scanner.nextLine();
+             System.out.println("└────────────────────────────────────────┘");
+
+             List<Treatment> results = treatmentDAO.searchByPatientName(patientName);
+             displaySearchResults(results, "Search: '" + patientName + "'");
+         } catch (java.util.InputMismatchException e) {
+             System.out.println("Error: Invalid data type!");
+             scanner.nextLine();
+         }
+    }
+
+    private void searchByPriceRange() {
+        try {
+            System.out.println("\n┌─ SEARCH BY PRICE RANGE  ───────────────┐");
+            System.out.print("│ Enter minimum price: ");
+            double minPrice = scanner.nextDouble();
+
+            System.out.print("│ Enter maximum price: ");
+            double maxPrice = scanner.nextDouble();
+            scanner.nextLine();
+            System.out.println("└────────────────────────────────────────┘");
+
+            List<Treatment> results = treatmentDAO.searchByPriceRange(minPrice, maxPrice);
+
+            displaySearchResults(results, "Price: " + minPrice + " - " + maxPrice + " KZT");
+
+        } catch (java.util.InputMismatchException e) {
+            System.out.println("Error: Invalid number!");
+            scanner.nextLine();
+        }
+    }
+
+    private void searchHighCostedTreatment() {
+        try {
+            System.out.println("\n┌─ HIGH-COSTED TREATMENT ────────────────┐");
+            System.out.print("│ Enter minimum price: ");
+            double minPrice = scanner.nextDouble();
+            scanner.nextLine();
+            System.out.println("└────────────────────────────────────────┘");
+
+            List<Treatment> results = treatmentDAO.searchByMinPrice(minPrice);
+
+            displaySearchResults(results, "Price >= " + minPrice + " KZT");
+        } catch (java.util.InputMismatchException e) {
+            System.out.println("Error: Invalid number!");
+            scanner.nextLine();
+        }
+    }
+
+    private void displaySearchResults(List<Treatment> results, String criteria) {
+        System.out.println("\n╔════════════════════════════════════════╗");
+        System.out.println("║         SEARCH RESULTS                ║");
+        System.out.println("╚════════════════════════════════════════╝");
+        System.out.println("Criteria: " + criteria);
+        System.out.println("─────────────────────────────────────────");
+
+        if(results.isEmpty()) {
+            System.out.println("No treatment found matching criteria.");
+        } else {
+            for (int i = 0; i < results.size(); i++) {
+                Treatment t = results.get(i);
+                System.out.print((i + 1) + ". ");
+                System.out.print("[" + t.getAppointment() + "] ");
+                System.out.println(t.toString());
+            }
+            System.out.println("─────────────────────────────────────────");
+            System.out.println("Total results: " + results.size());
         }
     }
 
     private void demonstratePolymorphism() {
-        System.out.println("\n========================================");
-        System.out.println(" POLYMORPHISM DEMONSTRATION");
-        System.out.println("========================================");
-        if (allTreatment.isEmpty()) {
-            System.out.println("No treatment to demonstrate. ");
-            return;
-        }
-
-        for (Treatment t : allTreatment) {
-            t.Price();
-        }
-        System.out.println(" Notice: Same method name (price), different output!");
-        System.out.println(" This is POLYMORPHISM in action!");
+        treatmentDAO.demonstratePolymorphism();
     }
 
     private void addPet() {
         try {
-            System.out.println("\n--- ADD PET ---");
+            System.out.println("\n┌─ ADD PET ──────────────────────────────┐");
 
-            System.out.print("Enter petId: ");
+            System.out.print("| Enter pet ID: ");
             int petId = scanner.nextInt();
             scanner.nextLine();
-            System.out.print("Enter name: ");
+
+            System.out.print("| Enter name: ");
             String name = scanner.nextLine();
 
-            System.out.print("Enter species: ");
+            System.out.print("| Enter species: ");
             String species = scanner.nextLine();
 
-            System.out.print("Enter age: ");
+            System.out.print("| Enter age (years): ");
             int age = scanner.nextInt();
             scanner.nextLine();
 
-            System.out.println("Enter owner name: ");
+            System.out.println("| Enter owner name: ");
             String ownerName = scanner.nextLine();
 
-            System.out.print("Is young? (true/false): ");
+            System.out.print("| Is young? (true/false): ");
             boolean isYoung = scanner.nextBoolean();
             scanner.nextLine();
 
-            System.out.print("On which Life Stage: ");
+            System.out.print("| On which Life Stage: ");
             String getLifeStage = scanner.nextLine();
+            System.out.println("└────────────────────────────────────────┘");
 
             Pet pet = new Pet(petId, name, species, age, ownerName);
             pets.add(pet);
-            System.out.println("Pet added successfully!");
 
         } catch (java.util.InputMismatchException e) {
             System.out.println("Error: Invalid input type!");
@@ -338,9 +526,9 @@ public class VetclinicMenu implements Menu {
     }
 
     private void viewAllPets() {
-        System.out.println("\n========================================");
-        System.out.println("             ALL PETS");
-        System.out.println("========================================");
+        System.out.println("\n╔════════════════════════════════════════╗");
+        System.out.println("║               ALL PETS                 ║");
+        System.out.println("╚════════════════════════════════════════╝");
         if (pets.isEmpty()) {
             System.out.println("No pets found.");
             return;
@@ -354,28 +542,28 @@ public class VetclinicMenu implements Menu {
 
     private void addOwner() {
         try {
-        System.out.println("\n--- ADD OWNER ---");
+            System.out.println("\n┌─ ADD OWNER ────────────────────────────┐");
 
-        System.out.print("Enter ownerId: ");
-        int ownerId = scanner.nextInt();
-        scanner.nextLine();
+            System.out.print("| Enter Owner ID: ");
+            int ownerId = scanner.nextInt();
+            scanner.nextLine();
 
-        System.out.print("Enter name: ");
-        String name = scanner.nextLine();
+            System.out.print("| Enter name: ");
+            String name = scanner.nextLine();
 
-        System.out.print("Enter phone: ");
-        int phone = scanner.nextInt();
+            System.out.print("| Enter phone (+7..): ");
+            int phone = scanner.nextInt();
 
-        System.out.print("Enter number of pets: ");
-        int numberOfPets = scanner.nextInt();
+            System.out.print("| Enter number of pets: ");
+            int numberOfPets = scanner.nextInt();
 
-        System.out.print("Is frequent client? (true/false): ");
-        boolean isFrequentClient = scanner.nextBoolean();
-        scanner.nextLine();
+            System.out.print("| Is frequent client? (true/false): ");
+            boolean isFrequentClient = scanner.nextBoolean();
+            scanner.nextLine();
 
-        Owner owner = new Owner(ownerId, name, phone, numberOfPets);
-        owners.add(owner);
-        System.out.println("Owner added successfully!");
+            Owner owner = new Owner(ownerId, name, phone, numberOfPets);
+            owners.add(owner);
+            System.out.println("└────────────────────────────────────────┘");
 
         } catch (java.util.InputMismatchException e) {
             System.out.println("Error: Invalid input type!");
@@ -386,9 +574,9 @@ public class VetclinicMenu implements Menu {
     }
 
     private void viewAllOwners() {
-        System.out.println("\n========================================");
-        System.out.println(" ALL OWNERS");
-        System.out.println("========================================");
+        System.out.println("\n╔════════════════════════════════════════╗");
+        System.out.println("║              ALL OWNERS                ║");
+        System.out.println("╚════════════════════════════════════════╝");
         if (owners.isEmpty()) {
             System.out.println("No owners found.");
             return;
@@ -399,8 +587,22 @@ public class VetclinicMenu implements Menu {
         }
     }
 
+    private void viewAllVeterinarians() {
+        System.out.println("\n╔════════════════════════════════════════╗");
+        System.out.println("║          ALL VETERINARIANS             ║");
+        System.out.println("╚════════════════════════════════════════╝");
+        if (veterinarians.isEmpty()) {
+            System.out.println("No veterinarians found.");
+            return;
+        }
+        for (int i = 0; i < veterinarians.size(); i++) {
+            Veterinarian veterinarian = veterinarians.get(i);
+            System.out.println((i + 1) + ". " + veterinarians.get(i).toString());
+        }
+    }
+
     private void healPet() {
-        System.out.println("\n--- Heal Pet ---");
+        System.out.println("\n┌─ HEAL PET ────────────────────────────┐");
 
         if (pets.isEmpty()) {
             System.out.println("No pets available to heal");
@@ -424,11 +626,18 @@ public class VetclinicMenu implements Menu {
             Pet pet = pets.get(choice - 1);
             pet.heal();
             System.out.println("Way to heal: " + pet.getWay());
+            System.out.println("└────────────────────────────────────────┘");
+
         } catch (java.util.InputMismatchException e) {
             System.out.println("Error: Please enter a valid number!");
             scanner.nextLine();
         } catch (InvalidInputException e) {
             System.out.println("Error: " + e.getMessage());
         }
+    }
+
+    private void pressEnterToContinue() {
+        System.out.println("\n[Press Enter to continue...]");
+        scanner.nextLine();
     }
 }

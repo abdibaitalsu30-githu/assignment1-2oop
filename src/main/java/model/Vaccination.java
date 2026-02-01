@@ -4,8 +4,8 @@ public class Vaccination extends Treatment {
     private String vaccineName;
     private double doseMl;
 
-    public Vaccination(int treatmentId, int petid, String date, String status, double price, String vaccineName, double doseMl) {
-        super(treatmentId, petid, date, status, price);
+    public Vaccination(int treatmentId, String patientName, String date, String status, double price, String vaccineName, double doseMl) {
+        super(treatmentId, patientName, date, status, price);
         setVaccineName(vaccineName);
         setDoseMl(doseMl);
     }
@@ -13,8 +13,8 @@ public class Vaccination extends Treatment {
     public String getVaccineName() {
         return vaccineName;
     }
-    public String getDoseMl() {
-        return doseMl + "ml";
+    public double getDoseMl() {
+        return doseMl;
     }
 
     public void setVaccineName(String vaccineName) {
@@ -46,7 +46,7 @@ public class Vaccination extends Treatment {
     }
 
     public void Status(String status) {
-        System.out.println("Vaccination is " + status + " with dose: " + getDoseMl());
+        System.out.println("Vaccination is " + status + " with dose: " + doseMl + "ml");
     }
     public boolean isForBigAnimal() {
         return doseMl >= 5.0;
@@ -57,7 +57,7 @@ public class Vaccination extends Treatment {
         super.displayInfo();
         System.out.println("Appointment: Vaccination");
         System.out.println("Vaccine name: " + vaccineName);
-        System.out.println("Dose: " + getDoseMl());
+        System.out.println("Dose: " + doseMl + "ml");
         if (isForBigAnimal()) {
             System.out.println("Big animal");
         }
@@ -65,6 +65,6 @@ public class Vaccination extends Treatment {
 
     @Override
     public String toString() {
-        return super.toString() + " | Vaccine name: " + vaccineName + " | Dose: " + getDoseMl();
+        return super.toString() + " | Vaccine name: " + vaccineName + " | Dose: " + doseMl + "ml";
     }
 }
