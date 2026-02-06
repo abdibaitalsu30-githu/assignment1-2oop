@@ -85,39 +85,6 @@ public class TreatmentDAO {
         }
         return false;
     }
-    /*public void getAllTreatment() {
-        String sql = "SELECT * FROM treatment";
-
-        Connection connection = DatabaseConnection.getConnection();
-
-        try {
-            PreparedStatement statement = connection.prepareStatement(sql);
-            ResultSet resultSet = statement.executeQuery();
-
-            System.out.println("\n--- ALL TREATMENT FROM DATABASE ---");
-            while (resultSet.next()) { //move to next row
-                int treatmentId = resultSet.getInt("treatment_id"); //get column value
-                String patientName = resultSet.getString("patient_name");
-                String date = resultSet.getString("date");
-                String status = resultSet.getString("status");
-                double price = resultSet.getDouble("price");
-
-                System.out.println("Treatment ID: " + treatmentId);
-                System.out.println("PatientName: " + patientName);
-                System.out.println("Date: " + date);
-                System.out.println("Status: " + status);
-                System.out.println("Price: " + price);
-                System.out.println("---");
-            }
-            resultSet.close();
-            statement.close();
-        } catch (SQLException e) {
-            System.out.println("Select failed!");
-            e.printStackTrace();
-        } finally {
-            DatabaseConnection.closeConnection(connection);
-        }
-    }*/
 
         public List<Treatment> getAllTreatment() {
         List<Treatment> treatmentList = new ArrayList<>();
